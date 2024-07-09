@@ -83,7 +83,18 @@ def merge(list1, list2):
     return combined_list
 
 
+# quicksort
+def quicksort(my_list):
+    # TODO
+    if len(my_list) < 2:
+        return my_list
+    else:
+        return my_list
 
+    # https://en.wikipedia.org/wiki/Quicksort#Algorithm
+
+# searching an ordered list
+#TODO
 
 list1 = [1, 4, 8]
 list2 = [1, 2, 3, 4, 5]
