@@ -95,23 +95,12 @@ def merge(my_list1, my_list2):
 # quicksort
 def quicksort(my_list):
     # https://en.wikipedia.org/wiki/Quicksort#Algorithm
-    # sorts my_list in place and returns my_list
-    # TODO
-    # pseudo code
-    # choose pivot with median of three--sort the start, end, and middle index, and choose middle index as your pivot
-    # (this improves performance on avg)
-    # swap pivot with last item in the list
-    # from left, find itemFromLeft that is the first item larger than the pivot value
-    # from right, find itemFromRight that is the first item smaller than pivot value
-    # swap itemFromLeft and itemFromRight
-    # repeat this process, moving indices across the array until they cross
-    # when they cross, >>swap itemFromLeft with the pivot (which was stored at the end)<< (don't the pivot back where it
-    # was originally)
-    # now, original pivot is back at the pivot index and everything to the left is smaller and
-    # everything to the right is bigger
-    # so recur on the two halves and append them with the pivot in between
-
-    # continuation condition, covering lists of size 0, 1, 2
+    """
+    In-place sort of my_list using quicksort algorithm
+    :param my_list: an unsorted list of type comparable by ==, <, >
+    :return: my_list, after it has been sorted
+    """
+    # base case/continuation condition, covering lists of size 0, 1, 2
     if len(my_list) <= 1:
         return my_list
     elif len(my_list) == 2:
