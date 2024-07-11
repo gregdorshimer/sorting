@@ -94,13 +94,101 @@ def merge(my_list1, my_list2):
 
 # quicksort
 def quicksort(my_list):
-    # TODO
-    if len(my_list) < 2:
-        return my_list
-    else:
-        return my_list
-
     # https://en.wikipedia.org/wiki/Quicksort#Algorithm
+    # sorts my_list in place and returns my_list
+    # TODO
+    # pseudo code
+    # choose pivot with median of three--sort the start, end, and middle index, and choose middle index as your pivot
+    # (this improves performance on avg)
+    # swap pivot with last item in the list
+    # from left, find itemFromLeft that is the first item larger than the pivot value
+    # from right, find itemFromRight that is the first item smaller than pivot value
+    # swap itemFromLeft and itemFromRight
+    # repeat this process, moving indices across the array until they cross
+    # when they cross, >>swap itemFromLeft with the pivot (which was stored at the end)<< (don't the pivot back where it
+    # was originally)
+    # now, original pivot is back at the pivot index and everything to the left is smaller and
+    # everything to the right is bigger
+    # so recur on the two halves and append them with the pivot in between
+
+    # continuation condition, covering lists of size 0, 1, 2
+    if len(my_list) <= 1:
+        return my_list
+    elif len(my_list) == 2:
+        if my_list[0] < my_list[1]:
+            return my_list
+        else:
+            temp = my_list[0]
+            my_list[0] = my_list[1]
+            my_list[1] = temp
+            return my_list
+
+    # choosing pivot, median-of-three method
+    first = my_list[0]
+    middle = my_list[math.floor(len(my_list) / 2)]
+    last = my_list[len(my_list) - 1]
+    triple = [first]
+    triple = insert(triple, middle)
+    triple = insert(triple, last)
+    my_list[0] = triple[0]
+    my_list[math.floor(len(my_list) / 2)] = triple[1]
+    my_list[len(my_list) - 1] = triple[2]
+    pivot_index = math.floor(len(my_list) / 2)
+    pivot_val = my_list[pivot_index]
+
+    # swap pivot with last item in the list (this could be combined with steps above to shorten code)
+    my_list[math.floor(len(my_list) / 2)] = my_list[len(my_list) - 1]
+    my_list[len(my_list) - 1] = pivot_val
+
+    # iterate over list from left and right, swapping items if they are on the wrong
+    # side of the pivot
+    index_from_left = 0
+    index_from_right = len(my_list) - 2
+    while index_from_left < index_from_right:
+        # if both indices have found items that are out of place (larger or smaller than the pivot, respectively),
+        # then swap them
+        if (my_list[index_from_left] > pivot_val) & (my_list[index_from_right] < pivot_val):
+            temp2 = my_list[index_from_left]
+            my_list[index_from_left] = my_list[index_from_right]
+            my_list[index_from_right] = temp2
+            # increment/decrement both indices because a swap was done
+            index_from_left += 1
+            index_from_right -= 1
+
+        # if left has found a val that needs to be swapped but right has not, then
+        # decrement right and don't change left
+        elif (my_list[index_from_left] > pivot_val) & (my_list[index_from_right] >= pivot_val):
+            index_from_right -= 1
+
+        # if right has found a val that needs to be swapped but left has not, then
+        # increment left and don't change right
+        elif (my_list[index_from_left] <= pivot_val) & (my_list[index_from_right] < pivot_val):
+            index_from_left += 1
+
+        # otherwise, neither index has found a value out of place, so increment/decrement both
+        else:
+            index_from_left += 1
+            index_from_right -= 1
+
+    # now swap the pivot back into the list at index_from_left, or index_from_left + 1, depending on
+    # whether the item at index_from_left is larger or smaller than the pivot. This last check
+    # accounts for cases where the indices overlap
+    if my_list[index_from_left] > pivot_val:
+        pivot_swap_index = index_from_left
+    else:
+        pivot_swap_index = index_from_left + 1
+
+    temp3 = my_list[pivot_swap_index]
+    my_list[pivot_swap_index] = pivot_val
+    my_list[len(my_list) - 1] = temp3
+
+    # now the pivot copied to index_from_left, so that
+    # everything to the left of the pivot is smaller, and everything to the right of the pivot is larger
+    # so recur on each half, and append the results with the pivot in between
+    result = quicksort(my_list[:pivot_swap_index])
+    result.append(pivot_val)
+    result.extend(quicksort(my_list[pivot_swap_index + 1:]))
+    return result
 
 
 # searching an ordered list with a loop
@@ -175,6 +263,7 @@ list5 = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 list6 = [1, 2, 3, 5, 4]
 list7 = [5, 3, 6, 8, 2, 4, 1, 9, 7]
 list8 = [3, 5, 7, 9, 11, 13, 16, 20, 24, 30, 35, 100]
+list9 = [11, 27, 23, 29, 33, 93, 62, 14, 8, 0, 123]
 
 """
 print(insert(list1, 6))
@@ -218,4 +307,17 @@ print(bin_search_loop(list8, 100))
 print(bin_search_loop(list8, 1))
 print(bin_search_loop(list8, 25))
 print(bin_search_loop(list8, 1000))
+
+print('list1 before: ', list1)
+print('list1 after: ', quicksort(list1))
+print('list3 before: ', list3)
+print('list3 after: ', quicksort(list3))
+print('list4 before: ', list4)
+print('list4 after: ', quicksort(list4))
+print('list6 before: ', list6)
+print('list6 after: ', quicksort(list6))
+print('list7 before: ', list7)
+print('list7 after: ', quicksort(list7))
+print('list9 before: ', list9)
+print('list9 after: ', quicksort(list9))
 """
