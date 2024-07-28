@@ -92,6 +92,76 @@ def merge(my_list1, my_list2):
     return combined_list
 
 
+# heapsort
+def heapsort(my_list):
+    # https://en.wikipedia.org/wiki/Heapsort
+    """
+    In-place sort of my_list using heapsort algorithm:
+        (1) turns the list into a max-heap
+        (2) sorts the max-heap into a sorted list
+    :param my_list: the unsorted array
+    :return: my_list after it has been sorted
+    """
+    # heapify my_list
+    # call sift_down recursively on indices from len(my_list) / 2 to 0
+    for i in range(math.floor((len(my_list) - 1) / 2), -1, -1):
+        sift_down(my_list, i)
+
+    # sort my_list by extracting the root n times and placing it at the end of my_list
+    # for index i from len(my_list) - 1 to i = 0
+    #   swap root last index of heap
+    #   sift_down the root
+    for j in range(len(my_list) - 1, 0, -1):
+        temp = my_list[j]
+        my_list[j] = my_list[0]
+        my_list[0] = temp
+        sift_down(my_list, 0)
+
+    return my_list
+
+
+# sift_down, helper for heapsort
+def sift_down(my_heap, i):
+    """
+    Sifts the item at the given index down the given heap, in-place
+    :param my_heap: a binary max-heap (it need not obey heap requirements as this function is used to re-heapify
+    an altered heap)
+    :param i: index of the item that needs to be sifted down
+    :return: my_heap with item at index i sifted down through the heap
+    """
+    child_index1 = 2 * i + 1
+    child_index2 = 2 * i + 2
+    # if no child nodes:
+    if child_index1 >= len(my_heap):
+        # we have reached the bottom of the heap and no swap to be made, so return
+        return my_heap
+    # if there is one child node:
+    elif child_index1 == len(my_heap) - 1:
+        # compare, and swap if needed
+        if my_heap[i] < my_heap[child_index1]:
+            temp = my_heap[i]
+            my_heap[i] = my_heap[child_index1]
+            my_heap[child_index1] = temp
+            return sift_down(my_heap, child_index1)
+        # if no swap needed, then we are finished sifting down
+        return my_heap
+    # if there are two child nodes:
+    else:
+        # compare and swap with max(child1, child2) if needed
+        if my_heap[child_index1] > my_heap[child_index2]:
+            max_child_index = child_index1
+        else:
+            max_child_index = child_index2
+        # compare to parent, swap if needed
+        if my_heap[i] < my_heap[max_child_index]:
+            temp = my_heap[i]
+            my_heap[i] = my_heap[max_child_index]
+            my_heap[max_child_index] = temp
+            return sift_down(my_heap, max_child_index)
+        else:
+            return my_heap
+
+
 # quicksort
 def quicksort(my_list):
     # https://en.wikipedia.org/wiki/Quicksort#Algorithm
@@ -309,4 +379,19 @@ print('list7 before: ', list7)
 print('list7 after: ', quicksort(list7))
 print('list9 before: ', list9)
 print('list9 after: ', quicksort(list9))
+
+# TODO test sift_down
+
+print('list1 before: ', list1)
+print('list1 after: ', heapsort(list1))
+print('list3 before: ', list3)
+print('list3 after: ', heapsort(list3))
+print('list4 before: ', list4)
+print('list4 after: ', heapsort(list4))
+print('list6 before: ', list6)
+print('list6 after: ', heapsort(list6))
+print('list7 before: ', list7)
+print('list7 after: ', heapsort(list7))
+print('list9 before: ', list9)
+print('list9 after: ', heapsort(list9))
 """
