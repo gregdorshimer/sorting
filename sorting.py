@@ -102,47 +102,50 @@ def heapsort(my_list):
     :param my_list: the unsorted array
     :return: my_list after it has been sorted
     """
-    # heapify my_list
+    # heapify my_list into a max-heap
     # call sift_down recursively on indices from len(my_list) / 2 to 0
     for i in range(math.floor((len(my_list) - 1) / 2), -1, -1):
-        sift_down(my_list, i)
+        sift_down(my_list, item_index=i, end_index=len(my_list))
 
     # sort my_list by extracting the root n times and placing it at the end of my_list
     # for index i from len(my_list) - 1 to i = 0
     #   swap root last index of heap
     #   sift_down the root
+    i = 1
     for j in range(len(my_list) - 1, 0, -1):
         temp = my_list[j]
         my_list[j] = my_list[0]
         my_list[0] = temp
-        sift_down(my_list, 0)
+        sift_down(my_list, item_index=0, end_index=j)
+        i += 1
 
     return my_list
 
 
 # sift_down, helper for heapsort
-def sift_down(my_heap, i):
+def sift_down(my_heap, item_index, end_index):
     """
     Sifts the item at the given index down the given heap, in-place
-    :param my_heap: a binary max-heap (it need not obey heap requirements as this function is used to re-heapify
-    an altered heap)
-    :param i: index of the item that needs to be sifted down
-    :return: my_heap with item at index i sifted down through the heap
+    :param my_heap: an array where my_heap[0:end_index] is a binary max-heap (the heap portion need not
+    obey heap requirements as this function is used to re-heapify an altered heap)
+    :param item_index: index of the item that needs to be sifted down
+    :param end_index: the index where the non-heap portion of my_heap begins
+    :return: my_heap with item at index item_index sifted down through the heap portion of my_heap
     """
-    child_index1 = 2 * i + 1
-    child_index2 = 2 * i + 2
+    child_index1 = 2 * item_index + 1
+    child_index2 = 2 * item_index + 2
     # if no child nodes:
-    if child_index1 >= len(my_heap):
+    if child_index1 >= end_index:
         # we have reached the bottom of the heap and no swap to be made, so return
         return my_heap
     # if there is one child node:
-    elif child_index1 == len(my_heap) - 1:
+    elif child_index1 == end_index - 1:
         # compare, and swap if needed
-        if my_heap[i] < my_heap[child_index1]:
-            temp = my_heap[i]
-            my_heap[i] = my_heap[child_index1]
+        if my_heap[item_index] < my_heap[child_index1]:
+            temp = my_heap[item_index]
+            my_heap[item_index] = my_heap[child_index1]
             my_heap[child_index1] = temp
-            return sift_down(my_heap, child_index1)
+            return sift_down(my_heap, child_index1, end_index)
         # if no swap needed, then we are finished sifting down
         return my_heap
     # if there are two child nodes:
@@ -153,11 +156,11 @@ def sift_down(my_heap, i):
         else:
             max_child_index = child_index2
         # compare to parent, swap if needed
-        if my_heap[i] < my_heap[max_child_index]:
-            temp = my_heap[i]
-            my_heap[i] = my_heap[max_child_index]
+        if my_heap[item_index] < my_heap[max_child_index]:
+            temp = my_heap[item_index]
+            my_heap[item_index] = my_heap[max_child_index]
             my_heap[max_child_index] = temp
-            return sift_down(my_heap, max_child_index)
+            return sift_down(my_heap, max_child_index, end_index)
         else:
             return my_heap
 
@@ -380,7 +383,26 @@ print('list7 after: ', quicksort(list7))
 print('list9 before: ', list9)
 print('list9 after: ', quicksort(list9))
 
-# TODO test sift_down
+print('list1 before: ', list1)
+print('list1 after index 0: ', sift_down(list1, 0))
+print('list2 before: ', list2)
+print('list2 after index 1: ', sift_down(list2, 1))
+print('list2 before: ', list2)
+print('list2 after index 0: ', sift_down(list2, 0))
+print('list3 before: ', list3)
+print('list3 after index 0: ', sift_down(list3, 0))
+print('list3 before: ', list3)
+print('list3 after index 1: ', sift_down(list3, 1))
+print('list4 before: ', list4)
+print('list4 after index 0: ', sift_down(list4, 0))
+print('list4 before: ', list4)
+print('list4 after index 1: ', sift_down(list4, 1))
+print('list4 before: ', list4)
+print('list4 after index 4: ', sift_down(list4, 4))
+print('list8 before: ', list8)
+print('list8 after index 0: ', sift_down(list8, 0))
+print('list8 before: ', list8)
+print('list8 after index 2: ', sift_down(list8, 2))
 
 print('list1 before: ', list1)
 print('list1 after: ', heapsort(list1))

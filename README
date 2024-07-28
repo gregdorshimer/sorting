@@ -2,3 +2,9 @@ README
 
 Implementations of sorting algorithms and binary search of an ordered list.
 
+--insertion sort
+--merge sort
+--heapsort
+--quicksort
+--binary search (recursive)
+--binary search (for loop)
